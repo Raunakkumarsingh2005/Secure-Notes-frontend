@@ -1,22 +1,10 @@
-<<<<<<< HEAD
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-=======
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-//wrap the entire application by context provider so that we can access value anywhere in our project without any props drellings
+
+// wrap the entire application by context provider so that we can access value anywhere in our project without any props drillings
 import { ContextProvider } from "./store/ContextApi";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -24,7 +12,6 @@ root.render(
   <ContextProvider>
     <App />
   </ContextProvider>
->>>>>>> new-code
 );
 
 // If you want to start measuring performance in your app, pass a function
