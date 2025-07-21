@@ -1,41 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import api from '../../services/api';
-import '../../styles/Admin.css';
-
-const UserDetails = () => {
-  const { userId } = useParams();
-  const [user, setUser] = useState(null);
-  const [roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState('');
-  const [error, setError] = useState(null);
-  const [isEditingUsername, setIsEditingUsername] = useState(false);
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [newUsername, setNewUsername] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
-  const fetchUserDetails = useCallback(async () => {
-    try {
-      const response = await api.get(`/admin/user/${userId}`);
-      setUser(response.data);
-      setSelectedRole(response.data.role?.roleName || '');
-    } catch (err) {
-      setError('Failed to fetch user details');
-      console.error('Error fetching user details', err);
-    }
-  }, [userId]);
-
-  const fetchRoles = useCallback(async () => {
-    try {
-      const response = await api.get('/admin/roles');
-      setRoles(response.data);
-    } catch (err) {
-      setError('Failed to fetch roles');
-      console.error('Error fetching roles', err);
-=======
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../services/api";
@@ -77,7 +39,6 @@ const UserDetails = () => {
     try {
       const response = await api.get(`/admin/user/${userId}`);
       setUser(response.data);
-
       setSelectedRole(response.data.role?.roleName || "");
     } catch (err) {
       setError(err?.response?.data?.message);
@@ -88,7 +49,10 @@ const UserDetails = () => {
   }, [userId]);
 
   useEffect(() => {
-    //if user exist set the value by using the setValue function provided my react-hook-form
+    fetchUserDetails();
+  }, [fetchUserDetails]);
+
+  useEffect(() => {
     if (user && Object.keys(user).length > 0) {
       setValue("username", user.userName);
       setValue("email", user.email);
@@ -102,80 +66,17 @@ const UserDetails = () => {
     } catch (err) {
       setError(err?.response?.data?.message);
       console.error("Error fetching roles", err);
->>>>>>> new-code
     }
   }, []);
 
   useEffect(() => {
-    fetchUserDetails();
     fetchRoles();
-  }, [fetchUserDetails, fetchRoles]);
+  }, [fetchRoles]);
 
-<<<<<<< HEAD
-=======
-  //set the selected role
->>>>>>> new-code
   const handleRoleChange = (e) => {
     setSelectedRole(e.target.value);
   };
 
-<<<<<<< HEAD
-  const handleUpdateRole = async () => {
-    try {
-      const formData = new URLSearchParams();
-      formData.append('userId', userId);
-      formData.append('roleName', selectedRole);
-
-      await api.put(`/admin/update-role`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-      fetchUserDetails();
-    } catch (err) {
-      console.error('Error updating role', err);
-    }
-  };
-
-  const handleSaveUsername = async () => {
-    try {
-      const formData = new URLSearchParams();
-      formData.append('userId', userId);
-      formData.append('username', newUsername);
-
-      await api.put(`/admin/update-username`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-      setIsEditingUsername(false);
-      setUsernameError('');
-      fetchUserDetails();
-    } catch (err) {
-      setUsernameError('Failed to update username: ' + err.response.data);
-      console.error('Error updating username', err);
-    }
-  };
-
-  const handleSavePassword = async () => {
-    try {
-      const formData = new URLSearchParams();
-      formData.append('userId', userId);
-      formData.append('password', newPassword);
-
-      await api.put(`/admin/update-password`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-      setIsEditingPassword(false);
-      setPasswordError('');
-      fetchUserDetails();
-    } catch (err) {
-      setPasswordError('Failed to update password: ' + err.response.data);
-      console.error('Error updating password', err);
-=======
-  //handle update role
   const handleUpdateRole = async () => {
     setUpdateRoleLoader(true);
     try {
@@ -198,7 +99,6 @@ const UserDetails = () => {
     }
   };
 
-  //handle update the password
   const handleSavePassword = async (data) => {
     setPasswordLoader(true);
     const newPassword = data.password;
@@ -215,23 +115,16 @@ const UserDetails = () => {
       });
       setIsEditingPassword(false);
       setValue("password", "");
-      //fetchUserDetails();
       toast.success("password update success");
     } catch (err) {
       toast.error("Error updating password " + err.response.data);
     } finally {
       setPasswordLoader(false);
->>>>>>> new-code
     }
   };
 
   const handleCheckboxChange = async (e, updateUrl) => {
     const { name, checked } = e.target;
-<<<<<<< HEAD
-    try {
-      const formData = new URLSearchParams();
-      formData.append('userId', userId);
-=======
 
     let message = null;
     if (name === "lock") {
@@ -247,20 +140,10 @@ const UserDetails = () => {
     try {
       const formData = new URLSearchParams();
       formData.append("userId", userId);
-
->>>>>>> new-code
       formData.append(name, checked);
 
       await api.put(updateUrl, formData, {
         headers: {
-<<<<<<< HEAD
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-      fetchUserDetails();
-    } catch (err) {
-      console.error(`Error updating ${name}:`, err);
-=======
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
@@ -269,172 +152,34 @@ const UserDetails = () => {
     } catch (err) {
       toast.error(err?.response?.data?.message);
       console.log(`Error updating ${name}:`);
-    } finally {
-      message = null;
->>>>>>> new-code
     }
   };
 
   if (error) {
-<<<<<<< HEAD
-    return <p>{error}</p>;
-  }
-
-  return (
-    <div className="user-details">
-      {user ? (
-        <>
-          <h2>User Details For Admin Actions</h2>
-          <div className="profile-info">
-            <h3>Profile Information</h3>
-            <div>
-              <p>Username: 
-                {isEditingUsername ? (
-                  <>
-                    <input 
-                      type="text" 
-                      value={newUsername} 
-                      onChange={(e) => setNewUsername(e.target.value)} 
-                    />
-                    <button onClick={handleSaveUsername}>Save</button>
-                    <button onClick={() => setIsEditingUsername(false)}>Cancel</button>
-                    {usernameError && <p className="error">{usernameError}</p>}
-                  </>
-                ) : (
-                  <>
-                    {user.userName} 
-                    <button onClick={() => {
-                      setIsEditingUsername(true);
-                      setNewUsername(user.userName);
-                    }}>Edit</button>
-                  </>
-                )}
-              </p>
-            </div>
-            <p>Email: {user.email}</p>
-            <div>
-              <p>Password: 
-                {isEditingPassword ? (
-                  <>
-                    <input 
-                      type="password" 
-                      value={newPassword} 
-                      onChange={(e) => setNewPassword(e.target.value)} 
-                    />
-                    <button onClick={handleSavePassword}>Save</button>
-                    <button onClick={() => setIsEditingPassword(false)}>Cancel</button>
-                    {passwordError && <p className="error">{passwordError}</p>}
-                  </>
-                ) : (
-                  <button onClick={() => setIsEditingPassword(true)}>Edit</button>
-                )}
-              </p>
-            </div>
-          </div>
-          <div className="admin-actions">
-            <h3>Admin Actions</h3>
-            <div>
-              <label>Role: </label>
-              <select value={selectedRole} onChange={handleRoleChange}>
-                {roles.map(role => (
-                  <option key={role.roleId} value={role.roleName}>
-                    {role.roleName}
-                  </option>
-                ))}
-              </select>
-              <button onClick={handleUpdateRole}>Update Role</button>
-            </div>
-            <div>
-              <label>
-                <input 
-                  type="checkbox" 
-                  name="lock" 
-                  checked={!user.accountNonLocked} 
-                  onChange={(e) => handleCheckboxChange(e, '/admin/update-lock-status')} 
-                />
-                Lock Account
-              </label>
-            </div>
-            <div>
-              <label>
-                <input 
-                  type="checkbox" 
-                  name="expire" 
-                  checked={!user.accountNonExpired} 
-                  onChange={(e) => handleCheckboxChange(e, '/admin/update-expiry-status')} 
-                />
-                Account Expiry
-              </label>
-            </div>
-            <div>
-              <label>
-                <input 
-                  type="checkbox" 
-                  name="enabled" 
-                  checked={user.enabled} 
-                  onChange={(e) => handleCheckboxChange(e, '/admin/update-enabled-status')} 
-                />
-                Account Enabled
-              </label>
-            </div>
-            <div>
-              <label>
-                <input 
-                  type="checkbox" 
-                  name="credentialsExpire" 
-                  checked={!user.credentialsNonExpired} 
-                  onChange={(e) => handleCheckboxChange(e, '/admin/update-credentials-expiry-status')} 
-                />
-                Credentials Expired
-              </label>
-            </div>
-          </div>
-        </>
-      ) : (
-        <p>Loading...</p>
-=======
     return <Errors message={error} />;
   }
 
   return (
-    <div className="sm:px-12 px-4 py-10   ">
+    <div className="sm:px-12 px-4 py-10">
       {loading ? (
-        <>
-          {" "}
-          <div className="flex  flex-col justify-center items-center  h-72">
-            <span>
-              <Blocks
-                height="70"
-                width="70"
-                color="#4fa94d"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                visible={true}
-              />
-            </span>
-            <span>Please wait...</span>
-          </div>
-        </>
+        <div className="flex flex-col justify-center items-center h-72">
+          <Blocks height="70" width="70" color="#4fa94d" ariaLabel="blocks-loading" visible />
+          <span>Please wait...</span>
+        </div>
       ) : (
         <>
-          <div className="lg:w-[70%] sm:w-[90%] w-full  mx-auto shadow-lg shadow-gray-300 p-8 rounded-md">
+          <div className="lg:w-[70%] sm:w-[90%] w-full mx-auto shadow-lg shadow-gray-300 p-8 rounded-md">
             <div>
-              <h1 className="text-slate-800 text-2xl font-bold  pb-4">
+              <h1 className="text-slate-800 text-2xl font-bold pb-4">
                 Profile Information
                 <hr />
               </h1>
-              <form
-                className="flex  flex-col  gap-2  "
-                onSubmit={handleSubmit(handleSavePassword)}
-              >
+              <form className="flex flex-col gap-2" onSubmit={handleSubmit(handleSavePassword)}>
                 <InputField
                   label="UserName"
                   required
                   id="username"
-                  className="w-full"
                   type="text"
-                  message="*UserName is required"
                   placeholder="Enter your UserName"
                   register={register}
                   errors={errors}
@@ -444,9 +189,7 @@ const UserDetails = () => {
                   label="Email"
                   required
                   id="email"
-                  className="flex-1"
                   type="text"
-                  message="*Email is required"
                   placeholder="Enter your Email"
                   register={register}
                   errors={errors}
@@ -457,27 +200,23 @@ const UserDetails = () => {
                   required
                   autoFocus={isEditingPassword}
                   id="password"
-                  className="w-full"
                   type="password"
-                  message="*Password is required"
                   placeholder="Enter your Password"
                   register={register}
                   errors={errors}
                   readOnly={!isEditingPassword}
                   min={6}
-                />{" "}
+                />
                 {!isEditingPassword ? (
                   <Buttons
                     type="button"
-                    onClickhandler={() =>
-                      setIsEditingPassword(!isEditingPassword)
-                    }
+                    onClickhandler={() => setIsEditingPassword(true)}
                     className="bg-customRed mb-0 w-fit px-4 py-2 rounded-md text-white"
                   >
                     Click To Edit Password
                   </Buttons>
                 ) : (
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <Buttons
                       type="submit"
                       className="bg-btnColor mb-0 w-fit px-4 py-2 rounded-md text-white"
@@ -486,9 +225,7 @@ const UserDetails = () => {
                     </Buttons>
                     <Buttons
                       type="button"
-                      onClickhandler={() =>
-                        setIsEditingPassword(!isEditingPassword)
-                      }
+                      onClickhandler={() => setIsEditingPassword(false)}
                       className="bg-customRed mb-0 w-fit px-4 py-2 rounded-md text-white"
                     >
                       Cancel
@@ -498,27 +235,26 @@ const UserDetails = () => {
               </form>
             </div>
           </div>
-          <div className="lg:w-[70%] sm:w-[90%] w-full  mx-auto shadow-lg shadow-gray-300 p-8 rounded-md">
-            <h1 className="text-slate-800 text-2xl font-bold  pb-4">
+
+          <div className="lg:w-[70%] sm:w-[90%] w-full mx-auto shadow-lg shadow-gray-300 p-8 rounded-md mt-8">
+            <h1 className="text-slate-800 text-2xl font-bold pb-4">
               Admin Actions
               <hr />
             </h1>
 
             <div className="py-4 flex sm:flex-row flex-col sm:items-center items-start gap-4">
               <div className="flex items-center gap-2">
-                <label className="text-slate-600 text-lg font-semibold ">
-                  Role:{" "}
-                </label>
+                <label className="text-slate-600 text-lg font-semibold">Role:</label>
                 <select
-                  className=" px-8 py-1 rounded-md  border-2 uppercase border-slate-600  "
+                  className="px-8 py-1 rounded-md border-2 uppercase border-slate-600"
                   value={selectedRole}
                   onChange={handleRoleChange}
                 >
                   {roles.map((role) => (
                     <option
-                      className="bg-slate-200 flex flex-col gap-4 uppercase text-slate-700"
                       key={role.roleId}
                       value={role.roleName}
+                      className="bg-slate-200 uppercase text-slate-700"
                     >
                       {role.roleName}
                     </option>
@@ -526,7 +262,7 @@ const UserDetails = () => {
                 </select>
               </div>
               <button
-                className="bg-btnColor hover:text-slate-300 px-4 py-2 rounded-md text-white "
+                className="bg-btnColor hover:text-slate-300 px-4 py-2 rounded-md text-white"
                 onClick={handleUpdateRole}
               >
                 {updateRoleLoader ? "Loading..." : "Update Role"}
@@ -534,59 +270,44 @@ const UserDetails = () => {
             </div>
 
             <hr className="py-2" />
+
             <div className="flex flex-col gap-4 py-4">
               <div className="flex items-center gap-2">
-                <label className="text-slate-600 text-sm font-semibold uppercase">
-                  {" "}
-                  Lock Account
-                </label>
+                <label className="text-slate-600 text-sm font-semibold uppercase">Lock Account</label>
                 <input
-                  className="text-14 w-5 h-5"
+                  className="w-5 h-5"
                   type="checkbox"
                   name="lock"
                   checked={!user?.accountNonLocked}
-                  onChange={(e) =>
-                    handleCheckboxChange(e, "/admin/update-lock-status")
-                  }
+                  onChange={(e) => handleCheckboxChange(e, "/admin/update-lock-status")}
                 />
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-slate-600 text-sm font-semibold uppercase">
-                  {" "}
-                  Account Expiry
-                </label>
+                <label className="text-slate-600 text-sm font-semibold uppercase">Account Expiry</label>
                 <input
-                  className="text-14 w-5 h-5"
+                  className="w-5 h-5"
                   type="checkbox"
                   name="expire"
                   checked={!user?.accountNonExpired}
-                  onChange={(e) =>
-                    handleCheckboxChange(e, "/admin/update-expiry-status")
-                  }
+                  onChange={(e) => handleCheckboxChange(e, "/admin/update-expiry-status")}
                 />
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-slate-600 text-sm font-semibold uppercase">
-                  {" "}
-                  Account Enabled
-                </label>
+                <label className="text-slate-600 text-sm font-semibold uppercase">Account Enabled</label>
                 <input
-                  className="text-14 w-5 h-5"
+                  className="w-5 h-5"
                   type="checkbox"
                   name="enabled"
                   checked={user?.enabled}
-                  onChange={(e) =>
-                    handleCheckboxChange(e, "/admin/update-enabled-status")
-                  }
+                  onChange={(e) => handleCheckboxChange(e, "/admin/update-enabled-status")}
                 />
               </div>
               <div className="flex items-center gap-2">
                 <label className="text-slate-600 text-sm font-semibold uppercase">
-                  {" "}
                   Credentials Expired
                 </label>
                 <input
-                  className="text-14 w-5 h-5"
+                  className="w-5 h-5"
                   type="checkbox"
                   name="credentialsExpire"
                   checked={!user?.credentialsNonExpired}
@@ -601,7 +322,6 @@ const UserDetails = () => {
             </div>
           </div>
         </>
->>>>>>> new-code
       )}
     </div>
   );

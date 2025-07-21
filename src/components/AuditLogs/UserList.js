@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../../services/api.js';
-
-const UserList = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await api.get('/admin/getusers');
-        const usersData = Array.isArray(response.data) ? response.data : [];
-        setUsers(usersData);
-      } catch (err) {
-        console.error('Error fetching users', err);
-=======
 import React, { useEffect, useState } from "react";
 import api from "../../services/api.js";
 import { DataGrid } from "@mui/x-data-grid";
@@ -23,11 +6,9 @@ import { Blocks } from "react-loader-spinner";
 import Errors from "../Errors.js";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { MdOutlineEmail } from "react-icons/md";
-import { MdDateRange } from "react-icons/md";
+import { MdOutlineEmail, MdDateRange } from "react-icons/md";
 
-//Material ui data grid has used for the table
-//initialize the columns for the tables and (field) value is used to show data in a specific column dynamically
+// Columns for MUI DataGrid
 export const userListsColumns = [
   {
     field: "username",
@@ -38,54 +19,42 @@ export const userListsColumns = [
     align: "center",
     editable: false,
     headerClassName: "text-black font-semibold border",
-    cellClassName: "text-slate-700 font-normal  border",
-    renderHeader: (params) => <span className="text-center">UserName</span>,
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: () => <span className="text-center">UserName</span>,
   },
-
   {
     field: "email",
     headerName: "Email",
-    aligh: "center",
     width: 260,
-    editable: false,
     headerAlign: "center",
-    headerClassName: "text-black font-semibold text-center border ",
-    cellClassName: "text-slate-700 font-normal  border  text-center ",
     align: "center",
     disableColumnMenu: true,
-    renderHeader: (params) => <span>Email</span>,
-    renderCell: (params) => {
-      return (
-        <div className=" flex  items-center justify-center  gap-1 ">
-          <span>
-            <MdOutlineEmail className="text-slate-700 text-lg" />
-          </span>
-          <span>{params?.row?.email}</span>
-        </div>
-      );
-    },
+    headerClassName: "text-black font-semibold text-center border",
+    cellClassName: "text-slate-700 font-normal border text-center",
+    renderHeader: () => <span>Email</span>,
+    renderCell: (params) => (
+      <div className="flex items-center justify-center gap-1">
+        <MdOutlineEmail className="text-slate-700 text-lg" />
+        <span>{params?.row?.email}</span>
+      </div>
+    ),
   },
   {
     field: "created",
     headerName: "Created At",
     headerAlign: "center",
     width: 220,
-    editable: false,
-    headerClassName: "text-black font-semibold border",
-    cellClassName: "text-slate-700 font-normal  border  ",
     align: "center",
     disableColumnMenu: true,
-    renderHeader: (params) => <span>Created At</span>,
-    renderCell: (params) => {
-      return (
-        <div className=" flex justify-center  items-center  gap-1 ">
-          <span>
-            <MdDateRange className="text-slate-700 text-lg" />
-          </span>
-          <span>{params?.row?.created}</span>
-        </div>
-      );
-    },
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: () => <span>Created At</span>,
+    renderCell: (params) => (
+      <div className="flex justify-center items-center gap-1">
+        <MdDateRange className="text-slate-700 text-lg" />
+        <span>{params?.row?.created}</span>
+      </div>
+    ),
   },
   {
     field: "status",
@@ -93,34 +62,30 @@ export const userListsColumns = [
     headerAlign: "center",
     align: "center",
     width: 200,
-    editable: false,
     disableColumnMenu: true,
-    headerClassName: "text-black font-semibold border ",
-    cellClassName: "text-slate-700 font-normal  border  ",
-    renderHeader: (params) => <span className="ps-10">Status</span>,
+    headerClassName: "text-black font-semibold border",
+    cellClassName: "text-slate-700 font-normal border",
+    renderHeader: () => <span className="ps-10">Status</span>,
   },
   {
     field: "action",
     headerName: "Action",
     headerAlign: "center",
-    editable: false,
-    headerClassName: "text-black font-semibold text-cente",
-    cellClassName: "text-slate-700 font-normal",
     sortable: false,
     width: 200,
-    renderHeader: (params) => <span>Action</span>,
-    renderCell: (params) => {
-      return (
-        <Link
-          to={`/admin/users/${params.id}`}
-          className="h-full flex  items-center justify-center   "
-        >
-          <button className="bg-btnColor text-white px-4 flex justify-center items-center  h-9 rounded-md ">
-            Views
-          </button>
-        </Link>
-      );
-    },
+    headerClassName: "text-black font-semibold",
+    cellClassName: "text-slate-700 font-normal",
+    renderHeader: () => <span>Action</span>,
+    renderCell: (params) => (
+      <Link
+        to={`/admin/users/${params.id}`}
+        className="h-full flex items-center justify-center"
+      >
+        <button className="bg-btnColor text-white px-4 flex justify-center items-center h-9 rounded-md">
+          View
+        </button>
+      </Link>
+    ),
   },
 ];
 
@@ -138,53 +103,17 @@ const UserList = () => {
         setUsers(usersData);
       } catch (err) {
         setError(err?.response?.data?.message);
-
-        toast.error("Error fetching users", err);
+        toast.error("Error fetching users");
       } finally {
         setLoading(false);
->>>>>>> new-code
       }
     };
 
     fetchUsers();
   }, []);
 
-<<<<<<< HEAD
-  return (
-    <div className="user-list">
-      <h2>All Users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Account Created</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.userId}>
-              <td>{user.userName}</td>
-              <td>{user.email}</td>
-              <td>{new Date(user.accountCreated).toLocaleString()}</td>
-              <td>{user.enabled ? 'Active' : 'Inactive'}</td>
-              <td>
-                <Link to={`/admin/users/${user.userId}`}>View</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-=======
   const rows = users.map((item) => {
-    const formattedDate = moment(item.createdDate).format(
-      "MMMM DD, YYYY, hh:mm A"
-    );
-
-    //set the data for each rows in the table according to the field name in columns
-    //Example: username is the keyword in row it should matche with the field name in column so that the data will show on that column dynamically
+    const formattedDate = moment(item.createdDate).format("MMMM DD, YYYY, hh:mm A");
     return {
       id: item.userId,
       username: item.userName,
@@ -207,44 +136,28 @@ const UserList = () => {
       </div>
       <div className="overflow-x-auto w-full mx-auto">
         {loading ? (
-          <>
-            <div className="flex  flex-col justify-center items-center  h-72">
-              <span>
-                <Blocks
-                  height="70"
-                  width="70"
-                  color="#4fa94d"
-                  ariaLabel="blocks-loading"
-                  wrapperStyle={{}}
-                  wrapperClass="blocks-wrapper"
-                  visible={true}
-                />
-              </span>
-              <span>Please wait...</span>
-            </div>
-          </>
+          <div className="flex flex-col justify-center items-center h-72">
+            <Blocks height="70" width="70" color="#4fa94d" ariaLabel="blocks-loading" visible />
+            <span>Please wait...</span>
+          </div>
         ) : (
-          <>
-            {" "}
-            <DataGrid
-              className="w-fit mx-auto"
-              rows={rows}
-              columns={userListsColumns}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 6,
-                  },
+          <DataGrid
+            className="w-fit mx-auto"
+            rows={rows}
+            columns={userListsColumns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 6,
                 },
-              }}
-              disableRowSelectionOnClick
-              pageSizeOptions={[6]}
-              disableColumnResize
-            />
-          </>
+              },
+            }}
+            disableRowSelectionOnClick
+            pageSizeOptions={[6]}
+            disableColumnResize
+          />
         )}
       </div>
->>>>>>> new-code
     </div>
   );
 };
