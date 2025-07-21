@@ -1,40 +1,16 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-<<<<<<< HEAD
-=======
 import { useMyContext } from "../../store/ContextApi";
->>>>>>> new-code
 
 const OAuth2RedirectHandler = () => {
   const navigate = useNavigate();
   const location = useLocation();
-<<<<<<< HEAD
-=======
   const { setToken, setIsAdmin } = useMyContext();
->>>>>>> new-code
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get('token');
-<<<<<<< HEAD
-    console.log("OAuth2RedirectHandler : " + params);
-    console.log("OAuth2RedirectHandler : " + token);
-
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      localStorage.setItem('JWT_TOKEN', token);
-      const user = {
-        username: decodedToken.sub,
-        roles: decodedToken.roles.split(','),
-      };
-      localStorage.setItem('USER', JSON.stringify(user));
-      navigate('/notes');
-    } else {
-      navigate('/login');
-    }
-  }, [location, navigate]);
-=======
     console.log("OAuth2RedirectHandler: Params:", params.toString());
     console.log("OAuth2RedirectHandler: Token:", token);
 
@@ -70,7 +46,6 @@ const OAuth2RedirectHandler = () => {
       navigate('/login');
     }
   }, [location, navigate, setToken, setIsAdmin]);
->>>>>>> new-code
 
   return <div>Redirecting...</div>;
 };

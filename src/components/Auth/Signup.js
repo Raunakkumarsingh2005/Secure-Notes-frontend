@@ -1,46 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../../services/api';
-import '../../styles/Auth.css';
-
-const Signup = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('ROLE_USER');
-  const navigate = useNavigate();
-
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await api.post('/auth/public/signup', {
-        username,
-        email,
-        password,
-        role: [role]
-      });
-      if (response.data) {
-        navigate('/login');
-      }
-    } catch (error) {
-      console.error('Signup failed', error);
-    }
-  };
-
-  return (
-    <div className="auth-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignup}>
-        <input type="text" placeholder="Username" value={username}
-               onChange={(e) => setUsername(e.target.value)} required />
-        <input type="email" placeholder="Email" value={email}
-               onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password}
-               onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">Sign Up</button>
-=======
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../services/api";
 import { FcGoogle } from "react-icons/fc";
@@ -51,17 +9,14 @@ import InputField from "../InputField/InputField";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMyContext } from "../../store/ContextApi";
-import { useEffect } from "react";
 
 const Signup = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [role, setRole] = useState();
   const [loading, setLoading] = useState(false);
-  // Access the token and setToken function using the useMyContext hook from the ContextProvider
   const { token } = useMyContext();
   const navigate = useNavigate();
 
-  //react hook form initialization
   const {
     register,
     handleSubmit,
@@ -93,19 +48,16 @@ const Signup = () => {
     try {
       setLoading(true);
       const response = await api.post("/auth/public/signup", sendData);
-      toast.success("Reagister Successful");
+      toast.success("Register Successful");
       reset();
       if (response.data) {
         navigate("/login");
       }
     } catch (error) {
-      // Add an error programmatically by using the setError function provided by react-hook-form
-      //setError(keyword,message) => keyword means the name of the field where I want to show the error
-
       if (
         error?.response?.data?.message === "Error: Username is already taken!"
       ) {
-        setError("username", { message: "username is already taken" });
+        setError("username", { message: "Username is already taken" });
       } else if (
         error?.response?.data?.message === "Error: Email is already in use!"
       ) {
@@ -116,7 +68,6 @@ const Signup = () => {
     }
   };
 
-  //if there is token  exist navigate to the user to the home page if he tried to access the login page
   useEffect(() => {
     if (token) navigate("/");
   }, [navigate, token]);
@@ -129,19 +80,17 @@ const Signup = () => {
       >
         <div>
           <h1 className="font-montserrat text-center font-bold text-2xl">
-            Register Here Here
+            Register Here
           </h1>
           <p className="text-slate-600 text-center">
-            Enter your credentials to create new account
+            Enter your credentials to create a new account
           </p>
-          <div className="flex items-center justify-between gap-1 py-5 ">
+          <div className="flex items-center justify-between gap-1 py-5">
             <a
               href={`${apiUrl}/oauth2/authorization/google`}
               className="flex gap-1 items-center justify-center flex-1 border p-2 shadow-sm shadow-slate-200 rounded-md hover:bg-slate-300 transition-all duration-300"
             >
-              <span>
-                <FcGoogle className="text-2xl" />
-              </span>
+              <FcGoogle className="text-2xl" />
               <span className="font-semibold sm:text-customText text-xs">
                 Login with Google
               </span>
@@ -150,15 +99,12 @@ const Signup = () => {
               href={`${apiUrl}/oauth2/authorization/github`}
               className="flex gap-1 items-center justify-center flex-1 border p-2 shadow-sm shadow-slate-200 rounded-md hover:bg-slate-300 transition-all duration-300"
             >
-              <span>
-                <FaGithub className="text-2xl" />
-              </span>
+              <FaGithub className="text-2xl" />
               <span className="font-semibold sm:text-customText text-xs">
                 Login with Github
               </span>
             </a>
           </div>
-
           <Divider className="font-semibold">OR</Divider>
         </div>
 
@@ -172,7 +118,7 @@ const Signup = () => {
             placeholder="type your username"
             register={register}
             errors={errors}
-          />{" "}
+          />
           <InputField
             label="Email"
             required
@@ -206,14 +152,10 @@ const Signup = () => {
 
         <p className="text-center text-sm text-slate-700 mt-2">
           Already have an account?{" "}
-          <Link
-            className="font-semibold underline hover:text-black"
-            to="/login"
-          >
+          <Link className="font-semibold underline hover:text-black" to="/login">
             Login
           </Link>
         </p>
->>>>>>> new-code
       </form>
     </div>
   );

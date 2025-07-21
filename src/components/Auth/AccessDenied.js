@@ -1,27 +1,11 @@
-<<<<<<< HEAD
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../styles/AccessDenied.css';
-=======
 import React from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
->>>>>>> new-code
+import "../../styles/AccessDenied.css";
 
 const AccessDenied = () => {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const handleGoBack = () => {
-    navigate('/');
-  };
-
-  return (
-    <div className="access-denied-container">
-      <h1>Access Denied</h1>
-      <p>You do not have permission to view this page.</p>
-      <button onClick={handleGoBack}>Go Back</button>
-=======
   const goHome = () => {
     navigate("/");
   };
@@ -43,7 +27,6 @@ const AccessDenied = () => {
           Go Back Home
         </button>
       </div>
->>>>>>> new-code
     </div>
   );
 };

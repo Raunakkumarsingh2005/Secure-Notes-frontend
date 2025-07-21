@@ -1,39 +1,3 @@
-<<<<<<< HEAD
-// components/Navbar.js
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/Navbar.css';
-
-const Navbar = () => {
-  const navigate = useNavigate();
-  const token = localStorage.getItem('JWT_TOKEN');
-  const isAuthenticated = !!token; // Check if the token exists
-
-  const handleLogout = () => {
-    localStorage.removeItem('JWT_TOKEN');  // Updated to remove token from localStorage
-    localStorage.removeItem('USER'); // Remove user details as well
-    localStorage.removeItem('CSRF_TOKEN');
-    navigate('/login');
-  };
-
-  return (
-    <nav className="navbar">
-      {isAuthenticated ? (
-        <>
-          <Link to="/notes">All Notes</Link>
-          <Link to="/create-note">Create Note</Link>
-          <Link to="/admin/auditlogs">Admin Area</Link>
-          <Link to="/profile">Profile</Link>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
-        </>
-      )}
-    </nav>
-=======
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
@@ -41,18 +5,16 @@ import { RxCross2 } from "react-icons/rx";
 import { useMyContext } from "../store/ContextApi";
 
 const Navbar = () => {
-  //handle the header opening and closing menu for the tablet/mobile device
   const [headerToggle, setHeaderToggle] = useState(false);
   const pathName = useLocation().pathname;
   const navigate = useNavigate();
 
-  // Access the states by using the useMyContext hook from the ContextProvider
   const { token, setToken, setCurrentUser, isAdmin, setIsAdmin } =
     useMyContext();
 
   const handleLogout = () => {
-    localStorage.removeItem("JWT_TOKEN"); // Updated to remove token from localStorage
-    localStorage.removeItem("USER"); // Remove user details as well
+    localStorage.removeItem("JWT_TOKEN");
+    localStorage.removeItem("USER");
     localStorage.removeItem("CSRF_TOKEN");
     localStorage.removeItem("IS_ADMIN");
     setToken(null);
@@ -62,35 +24,34 @@ const Navbar = () => {
   };
 
   return (
-    <header className="h-headerHeight z-50 text-textColor bg-headerColor shadow-sm  flex items-center sticky top-0">
+    <header className="h-headerHeight z-50 text-textColor bg-headerColor shadow-sm flex items-center sticky top-0">
       <nav className="sm:px-10 px-4 flex w-full h-full items-center justify-between">
         <Link to="/">
-          {" "}
-          <h3 className=" font-dancingScript text-logoText">Secure Notes</h3>
+          <h3 className="font-dancingScript text-logoText">Secure Notes</h3>
         </Link>
         <ul
-          className={`lg:static  absolute left-0  top-16 w-full lg:w-fit lg:px-0 sm:px-10 px-4  lg:bg-transparent bg-headerColor   ${
+          className={`lg:static absolute left-0 top-16 w-full lg:w-fit lg:px-0 sm:px-10 px-4 lg:bg-transparent bg-headerColor ${
             headerToggle
               ? "min-h-fit max-h-navbarHeight lg:py-0 py-4 shadow-md shadow-slate-700 lg:shadow-none"
-              : "h-0 overflow-hidden "
-          }  lg:h-auto transition-all duration-100 font-montserrat text-textColor flex lg:flex-row flex-col lg:gap-8 gap-2`}
+              : "h-0 overflow-hidden"
+          } lg:h-auto transition-all duration-100 font-montserrat text-textColor flex lg:flex-row flex-col lg:gap-8 gap-2`}
         >
           {token && (
             <>
               <Link to="/notes">
                 <li
-                  className={` ${
-                    pathName === "/notes" ? "font-semibold " : ""
-                  } py-2 cursor-pointer  hover:text-slate-300 `}
+                  className={`${
+                    pathName === "/notes" ? "font-semibold" : ""
+                  } py-2 cursor-pointer hover:text-slate-300`}
                 >
                   My Notes
                 </li>
               </Link>
               <Link to="/create-note">
                 <li
-                  className={` py-2 cursor-pointer  hover:text-slate-300 ${
-                    pathName === "/create-note" ? "font-semibold " : ""
-                  } `}
+                  className={`py-2 cursor-pointer hover:text-slate-300 ${
+                    pathName === "/create-note" ? "font-semibold" : ""
+                  }`}
                 >
                   Create Note
                 </li>
@@ -101,7 +62,7 @@ const Navbar = () => {
           <Link to="/contact">
             <li
               className={`${
-                pathName === "/contact" ? "font-semibold " : ""
+                pathName === "/contact" ? "font-semibold" : ""
               } py-2 cursor-pointer hover:text-slate-300`}
             >
               Contact
@@ -111,7 +72,7 @@ const Navbar = () => {
           <Link to="/about">
             <li
               className={`py-2 cursor-pointer hover:text-slate-300 ${
-                pathName === "/about" ? "font-semibold " : ""
+                pathName === "/about" ? "font-semibold" : ""
               }`}
             >
               About
@@ -122,18 +83,18 @@ const Navbar = () => {
             <>
               <Link to="/profile">
                 <li
-                  className={` py-2 cursor-pointer  hover:text-slate-300 ${
-                    pathName === "/profile" ? "font-semibold " : ""
+                  className={`py-2 cursor-pointer hover:text-slate-300 ${
+                    pathName === "/profile" ? "font-semibold" : ""
                   }`}
                 >
                   Profile
                 </li>
-              </Link>{" "}
+              </Link>
               {isAdmin && (
                 <Link to="/admin/users">
                   <li
-                    className={` py-2 cursor-pointer uppercase   hover:text-slate-300 ${
-                      pathName.startsWith("/admin") ? "font-semibold " : ""
+                    className={`py-2 cursor-pointer uppercase hover:text-slate-300 ${
+                      pathName.startsWith("/admin") ? "font-semibold" : ""
                     }`}
                   >
                     Admin
@@ -157,17 +118,16 @@ const Navbar = () => {
         </ul>
         <span
           onClick={() => setHeaderToggle(!headerToggle)}
-          className="lg:hidden block cursor-pointer text-textColor  shadow-md hover:text-slate-400"
+          className="lg:hidden block cursor-pointer text-textColor shadow-md hover:text-slate-400"
         >
           {headerToggle ? (
-            <RxCross2 className=" text-2xl" />
+            <RxCross2 className="text-2xl" />
           ) : (
-            <IoMenu className=" text-2xl" />
+            <IoMenu className="text-2xl" />
           )}
         </span>
       </nav>
     </header>
->>>>>>> new-code
   );
 };
 

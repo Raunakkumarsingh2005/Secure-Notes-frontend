@@ -1,48 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/LandingPage.css';
-
-const LandingPage = () => {
-  return (
-    <div className="landing-container">
-      <header className="landing-header">
-        <h1>Welcome to Secure Notes</h1>
-        <p>Your secure and private note-taking app.</p>
-        <div className="cta-buttons">
-          <Link to="/signup" className="cta-button">Sign Up</Link>
-          <Link to="/login" className="cta-button">Log In</Link>
-        </div>
-      </header>
-      <section className="landing-features">
-        <h2>Why Choose Secure Notes?</h2>
-        <div className="features-list">
-          <div className="feature-item">
-            <h3>Secure and Private</h3>
-            <p>We use state-of-the-art encryption to ensure your notes are safe and private.</p>
-          </div>
-          <div className="feature-item">
-            <h3>Easy to Use</h3>
-            <p>Our user-friendly interface makes it easy to create, manage, and organize your notes.</p>
-          </div>
-          <div className="feature-item">
-            <h3>Access Anywhere</h3>
-            <p>Access your notes from any device, anywhere in the world.</p>
-          </div>
-          <div className="feature-item">
-            <h3>Two-Factor Authentication</h3>
-            <p>Enhance your account security with optional two-factor authentication.</p>
-          </div>
-          <div className="feature-item">
-            <h3>Group Sharing</h3>
-            <p>Share your notes with groups and collaborate seamlessly.</p>
-          </div>
-        </div>
-      </section>
-      <footer className="landing-footer">
-        <p>&copy; {new Date().getFullYear()} Secure Notes. All rights reserved.</p>
-      </footer>
-=======
 import React from "react";
 import { Link } from "react-router-dom";
 import Buttons from "../utils/Buttons";
@@ -62,14 +17,13 @@ const fadeInFromBotom = {
 };
 
 const LandingPage = () => {
-  // Access the token  state by using the useMyContext hook from the ContextProvider
   const { token } = useMyContext();
 
   return (
     <div className="min-h-[calc(100vh-74px)] flex justify-center">
-      <div className="lg:w-[80%] w-full py-16  space-y-4  ">
+      <div className="lg:w-[80%] w-full py-16 space-y-4">
         <motion.h1
-          className="font-montserrat uppercase text-headerColor  xl:text-headerText md:text-4xl text-2xl mx-auto text-center font-bold sm:w-[95%] w-full"
+          className="font-montserrat uppercase text-headerColor xl:text-headerText md:text-4xl text-2xl mx-auto text-center font-bold sm:w-[95%] w-full"
           initial="hidden"
           animate="visible"
           variants={fadeInFromTop}
@@ -88,7 +42,7 @@ const LandingPage = () => {
           initial="hidden"
           animate="visible"
           variants={fadeInFromBotom}
-          className="flex items-center justify-center gap-3 py-10 "
+          className="flex items-center justify-center gap-3 py-10"
         >
           {token ? (
             <>
@@ -118,16 +72,15 @@ const LandingPage = () => {
             </>
           )}
         </motion.div>
-        .
         <div className="sm:pt-14 pt-0 xl:px-16 md:px-10">
-          <h1 className="font-montserrat uppercase text-headerColor  xl:text-headerText md:text-4xl text-2xl  mx-auto text-center font-bold  w-full">
+          <h1 className="font-montserrat uppercase text-headerColor xl:text-headerText md:text-4xl text-2xl mx-auto text-center font-bold w-full">
             More Reasons Company Around the world workable
           </h1>
           <Brands />
           <State />
           <div className="pb-10">
             <h1
-              className="font-montserrat uppercase text-headerColor pb-16  xl:text-headerText md:text-4xl text-2xl  mx-auto text-center font-bold sm:w-[95%] w-full"
+              className="font-montserrat uppercase text-headerColor pb-16 xl:text-headerText md:text-4xl text-2xl mx-auto text-center font-bold sm:w-[95%] w-full"
               variants={fadeInFromBotom}
             >
               Testimonial
@@ -136,7 +89,6 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
->>>>>>> new-code
     </div>
   );
 };
